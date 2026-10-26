@@ -1,0 +1,390 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Zayashield</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: hero berisi slider "tanpa PPF vs dengan PPF"; lalu layanan, pemilih paket dengan denah mobil, proses, FAQ, kontak. */
+:root {
+  --bg: #edf1f4;
+  --surface: #f8fafb;
+  --ink: #0d1b26;
+  --muted: #566674;
+  --line: #ccd6dd;
+  --accent: #00688c;
+  --accent-ink: #ffffff;
+  --signal: #d9480f;
+  --film: #d7e3ea;
+  --panel: #c3d0d9;
+  --display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0a1219; --surface: #111c25; --ink: #e6edf2; --muted: #8fa1ae; --line: #25343f;
+    --accent: #3cb4dc; --accent-ink: #04141b; --signal: #ff8a4c; --film: #172733; --panel: #2a3d4b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0a1219; --surface: #111c25; --ink: #e6edf2; --muted: #8fa1ae; --line: #25343f;
+  --accent: #3cb4dc; --accent-ink: #04141b; --signal: #ff8a4c; --film: #172733; --panel: #2a3d4b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 10; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; line-height: .95; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; }
+h3 { font-size: 1.5rem; font-weight: 700; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.label { font-family: var(--mono); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* header */
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 800; font-size: 1.7rem; letter-spacing: .06em; text-transform: uppercase; }
+.logo svg { width: 28px; height: 32px; }
+nav { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; }
+nav a { text-decoration: none; font-weight: 500; font-size: .95rem; color: var(--muted); }
+nav a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 22px; border-radius: 4px; background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none; border: 0; cursor: pointer; font-family: var(--body); font-size: 1rem; }
+.btn:hover { filter: brightness(1.1); }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+nav .btn { color: var(--accent-ink); padding: 9px 16px; font-size: .9rem; }
+@media (max-width: 620px) { nav a:not(.btn) { display: none; } }
+
+/* hero */
+.hero { display: grid; grid-template-columns: 1fr 1.05fr; gap: 48px; align-items: center; padding-block: 56px 72px; }
+.hero > * { min-width: 0; }
+h1 { font-size: clamp(3.2rem, 9vw, 6.4rem); font-weight: 800; }
+h1 em { font-style: normal; color: var(--accent); }
+.hero p.lead { margin-top: 22px; max-width: 46ch; font-size: 1.12rem; color: var(--muted); }
+.hero .cta { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+.specs { margin-top: 36px; display: grid; grid-template-columns: repeat(3, auto); gap: 8px 28px; justify-content: start; border-top: 1px solid var(--line); padding-top: 18px; }
+.specs b { display: block; font-family: var(--display); font-size: 1.7rem; font-weight: 800; line-height: 1; }
+.specs span { font-family: var(--mono); font-size: .7rem; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; gap: 36px; padding-block: 36px 52px; } }
+
+/* compare slider */
+.compare { position: relative; aspect-ratio: 5 / 4; border-radius: 6px; overflow: hidden; --pos: 50%; border: 1px solid var(--line); background: #1c3550; max-width: 100%; touch-action: pan-y; }
+.layer { position: absolute; inset: 0; overflow: hidden; }
+.before { background: radial-gradient(ellipse at 28% 18%, rgba(255,255,255,.12), transparent 55%), linear-gradient(160deg, #56697e, #34465b); }
+.before::before { content: ""; position: absolute; inset: 0; background:
+  repeating-conic-gradient(from 10deg at 32% 58%, rgba(255,255,255,.085) 0 .5deg, transparent .5deg 6deg),
+  repeating-conic-gradient(from 40deg at 74% 28%, rgba(255,255,255,.07) 0 .45deg, transparent .45deg 9deg); }
+.before::after { content: ""; position: absolute; inset: 0; background: rgba(200,208,216,.16); }
+.after { background: linear-gradient(160deg, #1d5f97, #0d2f57 58%, #071b35); clip-path: inset(0 0 0 var(--pos)); }
+.after::before { content: ""; position: absolute; inset: 0; background: linear-gradient(112deg, transparent 28%, rgba(255,255,255,.34) 37%, rgba(255,255,255,.04) 46%, transparent 52%), linear-gradient(0deg, rgba(0,0,0,.28), transparent 40%); }
+.drop { position: absolute; border-radius: 50%; background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.95) 0 8%, rgba(160,205,240,.35) 30%, rgba(10,40,80,.35) 75%, rgba(255,255,255,.28) 100%); box-shadow: 0 2px 3px rgba(0,0,0,.35); }
+.tag { position: absolute; top: 14px; font-family: var(--mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 3px; background: rgba(8,16,24,.72); color: #fff; z-index: 2; }
+.tag.l { left: 14px; } .tag.r { right: 14px; background: var(--accent); color: var(--accent-ink); }
+.handle { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; background: #fff; transform: translateX(-1px); z-index: 3; pointer-events: none; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+.handle::after { content: "\2194"; position: absolute; top: 50%; left: 50%; width: 42px; height: 42px; margin: -21px; border-radius: 50%; background: #fff; color: #0d1b26; display: grid; place-items: center; font-size: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.compare input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; z-index: 4; margin: 0; }
+.compare input:focus-visible ~ .handle::after { outline: 3px solid var(--accent); outline-offset: 3px; }
+.caption { margin-top: 10px; font-size: .85rem; color: var(--muted); }
+
+/* sections */
+section { padding-block: 72px; border-top: 1px solid var(--line); }
+.head { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 48px; align-items: end; margin-bottom: 40px; }
+.head p { color: var(--muted); max-width: 52ch; }
+@media (max-width: 760px) { .head { grid-template-columns: 1fr; } section { padding-block: 52px; } }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.two > * { min-width: 0; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 32px; display: flex; flex-direction: column; gap: 18px; }
+.svc.sticker { border-top: 4px solid var(--signal); }
+.svc.ppf { border-top: 4px solid var(--accent); }
+.svc ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.svc li { padding: 11px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; }
+.svc li span:last-child { font-family: var(--mono); font-size: .75rem; color: var(--muted); text-align: right; flex-shrink: 0; align-self: center; }
+.svc p.d { color: var(--muted); }
+
+/* package picker */
+.picker { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+@media (max-width: 860px) { .picker { grid-template-columns: 1fr; } }
+.car { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 24px; display: grid; place-items: center; }
+.car svg { width: min(100%, 260px); height: auto; }
+.panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; transition: fill .25s; }
+.panel.on { fill: var(--accent); }
+.glass { fill: var(--bg); stroke: var(--line); stroke-width: 1.5; }
+.body-out { fill: none; stroke: var(--muted); stroke-width: 2; }
+.pkgs { display: grid; gap: 10px; margin-bottom: 22px; }
+.pkg { display: block; }
+.pkg input { position: absolute; opacity: 0; }
+.pkg span.box { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 16px 18px; border: 1.5px solid var(--line); border-radius: 6px; background: var(--surface); cursor: pointer; }
+.pkg b { font-family: var(--display); font-size: 1.35rem; text-transform: uppercase; letter-spacing: .02em; }
+.pkg small { grid-column: 1; color: var(--muted); font-size: .88rem; }
+.pkg em { grid-row: 1; grid-column: 2; font-style: normal; font-family: var(--mono); font-size: .72rem; color: var(--muted); align-self: center; }
+.pkg input:checked + .box { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.pkg input:focus-visible + .box { outline: 3px solid var(--accent); outline-offset: 2px; }
+.field { display: grid; gap: 6px; margin-bottom: 14px; }
+.field label { font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.field select, .field input[type=text] { width: 100%; padding: 12px 14px; border-radius: 4px; border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; }
+.acts { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.note { margin-top: 12px; font-size: .85rem; color: var(--muted); min-height: 1.4em; }
+
+/* process */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; counter-reset: s; }
+.steps > div { padding: 0 22px 0 0; border-top: 3px solid var(--ink); padding-top: 18px; counter-increment: s; min-width: 0; }
+.steps > div::before { content: "Tahap " counter(s); font-family: var(--mono); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+.steps h3 { margin: 8px 0 8px; }
+.steps p { color: var(--muted); font-size: .95rem; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr 1fr; gap: 28px 20px; } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* faq */
+.faq { max-width: 780px; }
+details { border-top: 1px solid var(--line); padding: 18px 0; }
+details:last-child { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 600; font-size: 1.08rem; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: var(--mono); color: var(--accent); }
+details[open] summary::after { content: "\2212"; }
+details p { margin-top: 10px; color: var(--muted); max-width: 62ch; }
+
+/* contact */
+.contact { background: var(--ink); color: var(--bg); border-radius: 8px; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px 48px; align-items: end; }
+.contact > * { min-width: 0; }
+.contact h2 { color: var(--bg); }
+.contact p { color: var(--bg); opacity: .8; margin-top: 14px; max-width: 44ch; }
+.contact .btn { background: var(--bg); color: var(--ink); }
+.contact dl { margin: 0; display: grid; gap: 14px; }
+.contact dt { font-family: var(--mono); font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; }
+.contact dd { margin: 2px 0 0; font-size: 1.05rem; overflow-wrap: anywhere; user-select: all; }
+@media (max-width: 760px) { .contact { grid-template-columns: 1fr; } }
+footer { padding-block: 28px 40px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: .88rem; border-top: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .panel { transition: none; } }
+</style>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#atas" aria-label="Zayashield, ke atas">
+      <svg viewBox="0 0 28 32" aria-hidden="true"><path d="M14 1 26 5.5v10.2c0 7-4.8 12.3-12 15.3C6.8 28 2 22.700 2 15.700V5.500z" fill="none" stroke="var(--accent)" stroke-width="2.4" stroke-linejoin="round"/><path d="M8.500 11h11l-11 10h11" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="square"/></svg>
+      Zayashield
+    </a>
+    <nav aria-label="Menu utama">
+      <a href="#layanan">Layanan</a>
+      <a href="#paket">Paket PPF</a>
+      <a href="#proses">Proses</a>
+      <a href="#faq">Tanya Jawab</a>
+      <a class="btn" href="#kontak">Konsultasi</a>
+    </nav>
+  </div>
+</header>
+
+<main id="atas" class="wrap">
+  <div class="hero">
+    <div>
+      <p class="label">Pemasangan PPF dan stiker kendaraan</p>
+      <h1 style="margin-top:14px">Lindungi cat, <em>bukan</em> lecetnya.</h1>
+      <p class="lead">Zayashield memasang paint protection film (PPF) untuk menjaga cat mobil dan motor dari baret halus, batu kecil, dan kotoran yang mengikis. Kami juga mengerjakan stiker, wrapping, dan branding kendaraan.</p>
+      <div class="cta">
+        <a class="btn" href="#paket">Pilih area PPF</a>
+        <a class="btn ghost" href="#layanan">Lihat layanan</a>
+      </div>
+      <div class="specs">
+        <div><b>TPU</b><span>Bahan film</span></div>
+        <div><b>Gloss / Matte</b><span>Pilihan finish</span></div>
+        <div><b>Mobil + Motor</b><span>Kendaraan</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="compare" id="compare">
+        <div class="layer before"></div>
+        <div class="layer after" id="afterLayer"></div>
+        <span class="tag l">Tanpa PPF</span><span class="tag r">Dengan PPF</span>
+        <input type="range" id="pos" min="4" max="96" value="50" aria-label="Geser untuk membandingkan cat tanpa PPF dan dengan PPF">
+        <div class="handle"></div>
+      </div>
+      <p class="caption">Ilustrasi. Geser untuk membandingkan baret halus dan cat kusam dengan permukaan yang tetap mengilap.</p>
+    </div>
+  </div>
+
+  <section id="layanan">
+    <div class="head">
+      <h2>Dua layanan, satu workshop</h2>
+      <p>PPF untuk melindungi cat asli. Stiker dan wrapping untuk mengubah tampilan atau memberi identitas pada kendaraan.</p>
+    </div>
+    <div class="two">
+      <article class="svc ppf">
+        <p class="label">Perlindungan</p>
+        <h3>Paint Protection Film</h3>
+        <p class="d">Film TPU bening yang dipasang di atas cat. Melindungi dari baret halus dan benturan kecil, dan bisa dilepas tanpa merusak cat asli.</p>
+        <ul>
+          <li><span>PPF area rawan</span><span>Bumper, kap, spion</span></li>
+          <li><span>PPF full front</span><span>Depan lengkap</span></li>
+          <li><span>PPF full body</span><span>Seluruh bodi</span></li>
+          <li><span>PPF headlamp dan interior trim</span><span>Opsional</span></li>
+        </ul>
+      </article>
+      <article class="svc sticker">
+        <p class="label">Tampilan</p>
+        <h3>Stiker dan Wrapping</h3>
+        <p class="d">Ubah warna atau beri sentuhan personal. Cocok untuk kendaraan pribadi maupun armada usaha yang butuh branding rapi.</p>
+        <ul>
+          <li><span>Wrapping warna</span><span>Full atau sebagian</span></li>
+          <li><span>Cutting sticker dan decal</span><span>Sesuai desain</span></li>
+          <li><span>Striping dan aksen</span><span>Kap, atap, samping</span></li>
+          <li><span>Branding kendaraan usaha</span><span>Logo dan livery</span></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="paket">
+    <div class="head">
+      <h2>Pilih area yang dilindungi</h2>
+      <p>Ketuk paket untuk melihat panel yang tercakup pada denah mobil, lalu kirim permintaan penawaran langsung ke WhatsApp kami.</p>
+    </div>
+    <div class="picker">
+      <div class="car" aria-hidden="true">
+        <svg viewBox="0 0 220 440" id="carSvg">
+          <rect class="body-out" x="30" y="8" width="160" height="424" rx="46"/>
+          <rect class="panel" data-p="bumper" x="42" y="14" width="136" height="26" rx="13"/>
+          <rect class="panel" data-p="lamp" x="46" y="42" width="34" height="14" rx="6"/>
+          <rect class="panel" data-p="lamp" x="140" y="42" width="34" height="14" rx="6"/>
+          <rect class="panel" data-p="hood" x="84" y="42" width="52" height="106" rx="10"/>
+          <rect class="panel" data-p="hood" x="60" y="58" width="100" height="90" rx="16"/>
+          <rect class="panel" data-p="fender" x="34" y="62" width="22" height="104" rx="9"/>
+          <rect class="panel" data-p="fender" x="164" y="62" width="22" height="104" rx="9"/>
+          <rect class="panel" data-p="mirror" x="16" y="168" width="18" height="14" rx="6"/>
+          <rect class="panel" data-p="mirror" x="186" y="168" width="18" height="14" rx="6"/>
+          <path class="glass" d="M62 154h96l-8 32H70z"/>
+          <rect class="panel" data-p="door" x="34" y="172" width="24" height="120" rx="8"/>
+          <rect class="panel" data-p="door" x="162" y="172" width="24" height="120" rx="8"/>
+          <rect class="panel" data-p="roof" x="68" y="190" width="84" height="100" rx="14"/>
+          <path class="glass" d="M70 296h80l10 30H60z"/>
+          <rect class="panel" data-p="door" x="34" y="296" width="24" height="84" rx="8"/>
+          <rect class="panel" data-p="door" x="162" y="296" width="24" height="84" rx="8"/>
+          <rect class="panel" data-p="trunk" x="60" y="330" width="100" height="62" rx="14"/>
+          <rect class="panel" data-p="bumper" x="42" y="396" width="136" height="26" rx="13"/>
+        </svg>
+      </div>
+      <div>
+        <fieldset style="border:0;padding:0;margin:0 0 0">
+          <legend class="label" style="margin-bottom:10px">Paket PPF</legend>
+          <div class="pkgs">
+            <label class="pkg"><input type="radio" name="pkg" value="area" checked><span class="box"><b>Area Rawan</b><em>4 area</em><small>Bumper depan, kap mesin, spion, headlamp.</small></span></label>
+            <label class="pkg"><input type="radio" name="pkg" value="front"><span class="box"><b>Full Front</b><em>5 area</em><small>Semua di atas ditambah fender depan.</small></span></label>
+            <label class="pkg"><input type="radio" name="pkg" value="full"><span class="box"><b>Full Body</b><em>Semua panel</em><small>Seluruh permukaan cat, dari bumper depan sampai belakang.</small></span></label>
+          </div>
+        </fieldset>
+        <div class="field"><label for="veh">Jenis kendaraan</label>
+          <select id="veh"><option>Mobil hatchback / city car</option><option>Mobil sedan</option><option>Mobil SUV / crossover</option><option>Mobil MPV</option><option>Motor</option></select></div>
+        <div class="field"><label for="nm">Nama Anda</label><input type="text" id="nm" placeholder="Contoh: Budi" autocomplete="name"></div>
+        <div class="acts">
+          <a class="btn" id="waBtn" href="#kontak" target="_blank" rel="noopener">Kirim ke WhatsApp</a>
+          <button class="btn ghost" id="copyBtn" type="button">Salin pesan</button>
+        </div>
+        <p class="note" id="note"></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="proses">
+    <div class="head">
+      <h2>Dari cek cat sampai serah terima</h2>
+      <p>Hasil PPF dan stiker ditentukan oleh persiapan permukaan. Karena itu sebagian besar waktu kami habiskan sebelum film menempel.</p>
+    </div>
+    <div class="steps">
+      <div><h3>Cek dan konsultasi</h3><p>Kami periksa kondisi cat, tentukan area, finish, dan paket yang sesuai kebutuhan dan anggaran.</p></div>
+      <div><h3>Cuci dan persiapan</h3><p>Dekontaminasi cat, hilangkan kotoran yang menempel, dan koreksi bila ada baret yang perlu ditangani.</p></div>
+      <div><h3>Pemasangan</h3><p>Film dipotong dan dipasang presisi pada tiap panel, lalu tepinya dirapikan agar tidak mudah terangkat.</p></div>
+      <div><h3>Pengecekan akhir</h3><p>Kami cek setiap panel bersama Anda dan berikan petunjuk perawatan tertulis sebelum kendaraan diserahkan.</p></div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="head"><h2>Pertanyaan yang sering muncul</h2><p></p></div>
+    <div class="faq">
+      <details open><summary>Apa bedanya PPF dengan stiker atau wrapping?</summary><p>PPF adalah film pelindung bening yang menjaga cat asli dari baret dan benturan kecil. Stiker dan wrapping mengubah warna atau tampilan kendaraan, dan juga menutup cat asli, tetapi tujuan utamanya dekorasi atau branding.</p></details>
+      <details><summary>Berapa lama pemasangan?</summary><p>Tergantung area dan jenis kendaraan. PPF area tertentu bisa selesai dalam hitungan jam, sedangkan full body dan wrapping penuh biasanya memerlukan beberapa hari. Kami sampaikan estimasi saat konsultasi.</p></details>
+      <details><summary>Apakah mobil lama bisa dipasang PPF?</summary><p>Bisa, selama lapisan cat masih menempel baik. Baret dan kusam sebaiknya dikoreksi dulu karena film akan melapisi kondisi cat apa adanya.</p></details>
+      <details><summary>Kapan kendaraan boleh dicuci setelah pemasangan?</summary><p>Film membutuhkan waktu untuk menempel sempurna. Kami berikan petunjuk tertulis mengenai waktu tunggu dan cara perawatan sesuai film yang dipasang.</p></details>
+      <details><summary>Apakah PPF bisa dilepas?</summary><p>Bisa. Pada cat pabrikan yang kondisinya baik, film dapat dilepas tanpa merusak cat di bawahnya.</p></details>
+      <details><summary>Bisa membuat desain stiker sendiri?</summary><p>Bisa. Kirim logo atau desain Anda saat konsultasi, atau ceritakan idenya dan kami bantu menyusun layout yang sesuai bentuk kendaraan.</p></details>
+    </div>
+  </section>
+
+  <section id="kontak" style="border-top:0;padding-top:24px">
+    <div class="contact">
+      <div>
+        <h2>Tanya dulu, tanpa komitmen</h2>
+        <p>Kirim foto kendaraan dan ceritakan kebutuhan Anda. Kami balas dengan rekomendasi paket dan estimasi.</p>
+        <p style="margin-top:22px"><a class="btn" id="waBtn2" href="#kontak" target="_blank" rel="noopener">Chat WhatsApp</a></p>
+      </div>
+      <dl>
+        <div><dt>WhatsApp</dt><dd id="waText"></dd></div>
+        <div><dt>Alamat workshop</dt><dd>[Isi alamat workshop Zayashield]</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<div class="wrap">
+  <footer><span>&copy; Zayashield. Pemasangan PPF dan stiker kendaraan.</span><span>Gambar dan perbandingan di halaman ini bersifat ilustrasi.</span></footer>
+</div>
+
+<script>
+/* Ganti dua nilai ini dengan nomor WhatsApp bisnis Anda. Format WA_NUMBER: 62 diikuti nomor tanpa 0 di depan. */
+var WA_NUMBER = "6289675367089";
+var WA_DISPLAY = "+62 896 7536 7089";
+
+(function () {
+  var cmp = document.getElementById("compare");
+  var pos = document.getElementById("pos");
+  function setPos() { cmp.style.setProperty("--pos", pos.value + "%"); }
+  pos.addEventListener("input", setPos); setPos();
+
+  var drops = [[62,14,22],[78,30,14],[88,12,12],[70,52,26],[92,46,16],[58,70,15],[82,72,24],[96,84,12],[66,88,12],[75,8,10],[86,58,10],[60,36,10]];
+  var after = document.getElementById("afterLayer");
+  drops.forEach(function (d) {
+    var s = document.createElement("span"); s.className = "drop";
+    s.style.cssText = "left:" + d[0] + "%;top:" + d[1] + "%;width:" + d[2] + "px;height:" + d[2] + "px";
+    after.appendChild(s);
+  });
+
+  var map = { area: ["bumper","hood","mirror","lamp"], front: ["bumper","hood","mirror","lamp","fender"], full: ["bumper","hood","mirror","lamp","fender","door","roof","trunk"] };
+  var names = { area: "PPF Area Rawan (bumper depan, kap mesin, spion, headlamp)", front: "PPF Full Front (area rawan + fender depan)", full: "PPF Full Body (seluruh panel)" };
+  var panels = document.querySelectorAll("#carSvg .panel");
+  var veh = document.getElementById("veh"), nm = document.getElementById("nm");
+  var wa1 = document.getElementById("waBtn"), wa2 = document.getElementById("waBtn2");
+  var note = document.getElementById("note");
+  document.getElementById("waText").textContent = WA_DISPLAY;
+
+  function pkg() { return document.querySelector("input[name=pkg]:checked").value; }
+  function msg() {
+    var who = nm.value.trim();
+    return "Halo Zayashield, " + (who ? "saya " + who + ". " : "") + "saya ingin tanya " + names[pkg()] + " untuk " + veh.value + ". Mohon info estimasi biaya dan waktu pengerjaan. Terima kasih.";
+  }
+  function url(t) { return "https://wa.me/" + WA_NUMBER + (t ? "?text=" + encodeURIComponent(t) : ""); }
+  function update() {
+    var on = map[pkg()];
+    panels.forEach(function (p) { p.classList.toggle("on", on.indexOf(p.getAttribute("data-p")) > -1); });
+    wa1.href = url(msg()); wa2.href = url("Halo Zayashield, saya ingin konsultasi pemasangan PPF / stiker kendaraan.");
+  }
+  document.querySelectorAll("input[name=pkg]").forEach(function (r) { r.addEventListener("change", update); });
+  veh.addEventListener("change", update); nm.addEventListener("input", update);
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    var t = msg();
+    function done(ok) { note.textContent = ok ? "Pesan disalin. Tempel di WhatsApp ke " + WA_DISPLAY + "." : "Salin manual: " + t; }
+    try { navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); }); } catch (e) { done(false); }
+  });
+  update();
+})();
+</script>
+
+</body></html>
